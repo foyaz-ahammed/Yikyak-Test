@@ -22,10 +22,12 @@ fun TranslateView(
     inputText: TextFieldValue,
     onInputChange: (TextFieldValue) -> Unit,
     languages: List<String>?,
+    sourceLanguageIndex: Int,
     targetLanguageIndex: Int,
+    onSourceLanguageSelected: (Int) -> Unit,
     onTargetLanguageSelected: (Int) -> Unit,
-    onTranslateClick: () -> Unit, // TODO: implement
-    translatedText: String // TODO: implement
+    onTranslateClick: () -> Unit,
+    translatedText: String
 ) {
     Column(
         modifier = Modifier
@@ -63,7 +65,29 @@ fun TranslateView(
             horizontalArrangement = Arrangement.Center
         ) {
             // "Translate to: " prompt label
-            Text(stringResource(R.string.language_selection_prompt))
+            Text(stringResource(R.string.source_language_selection_prompt))
+
+            Spacer(Modifier.size(5.dp))
+
+            if (languages.isNullOrEmpty()) {
+                // Placeholder text if we don't have languages for the dropdown
+                Text(stringResource(R.string.language_selection_placeholder))
+            } else {
+                // Creates the dropdown list of languages to select from
+                LanguageDropDown(
+                    languages = languages,
+                    targetLanguageIndex = sourceLanguageIndex,
+                    onTargetLanguageSelected = onSourceLanguageSelected
+                )
+            }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            // "Translate to: " prompt label
+            Text(stringResource(R.string.target_language_selection_prompt))
 
             Spacer(Modifier.size(5.dp))
 
